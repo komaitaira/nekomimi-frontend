@@ -8,10 +8,10 @@ const src = path.join(__dirname, 'src');
 const dist = path.join(__dirname, 'dist');
 
 // 'production' か 'development' を指定
-const MODE = "development";
+const MODE = 'development';
 
 // ソースマップの利用有無(productionのときはソースマップを利用しない)
-const enabledSourceMap = MODE === "development";
+const enabledSourceMap = MODE === 'development';
 
 module.exports = {
   // developmentモードで実行します
@@ -22,16 +22,22 @@ module.exports = {
     // 生成されるファイル名
     filename: 'index.bundle.js',
     // 生成先のディレクトリ
-    path: dist
+    path: dist,
   },
   resolve: {
     // import文のパス指定にnode_modulesを省略できるようにします
     modules: ['node_modules'],
     // .jsまたは.jsxの拡張子を省略できるようにします
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   module: {
     rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        enforce: 'pre', // babel-loaderよりも前に実行される
+        loader: 'eslint-loader',
+      },
       {
         // ルールを適用するファイルの正規表現
         test: /\.(js|jsx)$/,
@@ -41,20 +47,20 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           // ソースマップの利用有無
-          sourceMap: enabledSourceMap
+          sourceMap: enabledSourceMap,
         },
-      }
-    ]
+      },
+    ],
   },
   devServer: {
     contentBase: dist, // 開発サーバーを立ち上げる参照ディレクトリ
     hot: true, // hot-reloadを有効にします
-    port: 3000 // サーバーを立ち上げるポート番号
+    port: 3000, // サーバーを立ち上げるポート番号
   },
   plugins: [
     // hot-reloadを有効にするプラグインを追加
     new webpack.HotModuleReplacementPlugin(),
     // HtmlWebpackPluginプラグインを追加
-    new HtmlWebpackPlugin()
-  ]
+    new HtmlWebpackPlugin(),
+  ],
 };
