@@ -1,0 +1,15 @@
+{
+  "extends": ["airbnb"], // airbnbのルールを継承します
+  "env": {
+    "browser": true, // ブラウザのグローバル変数を有効化します
+    "es6": true // es6(es2015)の構文を有効化します
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true // jsxを有効化します
+    }
+  },
+  "rules": {
+    "no-console": "off" // no-consoleのルールをoffにする
+  }
+}
